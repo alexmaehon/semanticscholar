@@ -38,9 +38,8 @@ class ApiRequester:
         retry=retry_if_exception_type(ConnectionRefusedError),
         stop=stop_after_attempt(10)
     )
-    def get_data(self, url: str, parameters: str, headers: dict) -> dict:
+    def get_data(self, url: str, parameters: str, proxies: dict, headers: dict) -> dict:
         '''Get data from Semantic Scholar API
-
         :param str url: absolute URL to API endpoint.
         :param str parameters: the parameters to add in the URL.
         :param str headers: request headers.
@@ -49,7 +48,7 @@ class ApiRequester:
         '''
 
         url = f'{url}?{parameters}'
-        r = requests.get(url, timeout=self._timeout, headers=headers)
+        r = requests.get(url, timeout=self._timeout, headers=headers, proxies=proxies)
 
         data = {}
         if r.status_code == 200:
